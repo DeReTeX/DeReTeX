@@ -1,0 +1,57 @@
+﻿<html>
+<head>
+	<title>Файл top.html - шапка сайта</title>
+</head>
+<body bgcolor="#E6E6E6">
+	<table  border="0"  >
+<tr>
+<td valign="middle" width="300">
+<p align="right">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+
+<style>.containerss div {display: none;}</style>
+
+<select id="selectItem">
+
+<option id="chelyabinsk">Челябинск</option>
+<option id="moskva">Москва</option>
+<option id="piter">Санкт-Петербург</option>
+<option id="nnovgor">Нижний Новгород</option>
+
+</select>
+
+
+
+<script type="text/javascript">
+<!--
+$( function() {
+
+if (localStorage.getItem("myKey")) {
+    var stored_select = localStorage.getItem("myKey");
+    $('#' + stored_select).prop( "selected", true );
+    $('.' + stored_select).show();
+    } else {
+$('.chelyabinsk').show();
+}
+});
+
+$("#selectItem").change(function(){
+    $('.containerss').find('div').hide();
+    var selected = $('#selectItem option:selected').attr('id');
+    localStorage.setItem("myKey", selected);
+    $('.' + selected).show();
+});  
+-->
+</script></p>
+</td>
+
+
+<td width="270"></td>
+
+<td width="140"><p><font color="dimgray">&nbsp&nbspЛичный кабинет</font></p></td>
+<td width="70"><p><font color="dimgray">&nbsp&nbsp&nbsp&nbspВойти</font></p></td>
+
+<td></td>
+</tr></table>
+
+</body>
+</html> 

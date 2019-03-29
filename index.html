@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Page</title>
+<meta name="generator" content="WYSIWYG Web Builder 12 - http://www.wysiwygwebbuilder.com">
+<link href="base/jquery-ui.min.css" rel="stylesheet">
+<link href="Untitled1.css" rel="stylesheet">
+<link href="index.css" rel="stylesheet">
+<script src="jquery-1.12.4.min.js"></script>
+<script src="jquery-ui.min.js"></script>
+<script src="./searchindex.js"></script>
+<script>
+var features = 'toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes,status=no,left=,top=,width=,height=';
+var searchDatabase = new SearchDatabase();
+var searchResults_length = 0;
+var searchResults = new Object();
+function searchPage(features)
+{
+   var element = document.getElementById('SiteSearch1');
+   if (element.value.length != 0 || element.value != " ")
+   {
+      var value = unescape(element.value);
+      var keywords = value.split(" ");
+      searchResults_length = 0;
+      for (var i=0; i<database_length; i++)
+      {
+         var matches = 0;
+         var words = searchDatabase[i].title + " " + searchDatabase[i].description + " " + searchDatabase[i].keywords;
+         for (var j = 0; j < keywords.length; j++)
+         {
+            var pattern = new RegExp(keywords[j], "i");
+            var result = words.search(pattern);
+            if (result >= 0)
+            {
+               matches++;
+            }
+            else
+            {
+               matches = 0;
+            }
+         }
+         if (matches == keywords.length)
+         {
+            searchResults[searchResults_length++] = searchDatabase[i];
+         }
+      }
+      var wndResults = window.open('about:blank', '', features);
+      setTimeout(function()
+      {
+         var results = '';
+         var html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Search results<\/title><'+'style>.highlight { color: #000000; background-color: #FFFFFF}<\/style><\/head>';
+         html = html + '<body style="background-color:#FFFFFF;margin:0;padding:2px 2px 2px 2px;">';
+         html = html + '<span style="font-family:Arial;font-size:13px;color:#696969">';
+         for (var n=0; n<searchResults_length; n++)
+         {
+            var page_keywords = searchResults[n].keywords;
+            for (var k = 0; k < keywords.length; k++)
+            {
+               keywords[k] = keywords[k].replace('*', '');
+               var rgxp = new RegExp(keywords[k], 'g');
+               var repl = '<span class="highlight">' + keywords[k] + '</span>';
+               page_keywords = page_keywords.replace(rgxp, repl);
+            }
+            results = results + '<strong><a style="color:#0000FF" target="_parent" href="'+searchResults[n].url+'">'+searchResults[n].title +'<\/a><\/strong><br>Keywords: ' + page_keywords +'<br><br>\n';
+         }
+         if (searchResults_length == 0)
+         {
+            results = 'No results';
+         }
+         else
+         {
+            html = html + searchResults_length;
+            html = html + ' result(s) found for search term: ';
+            html = html + value;
+            html = html + '<br><br>';
+         }
+         html = html + results;
+         html = html + '<\/span>';
+         html = html + '<\/body><\/html>';
+         wndResults.document.write(html);
+     },100);
+   }
+   return false;
+}
+function searchParseURL()
+{
+   var url = decodeURIComponent(window.location.href);
+   if (url.indexOf('?') > 0)
+   {
+      var terms = '';
+      var params = url.split('?');
+      var values = params[1].split('&');
+      for (var i=0;i<values.length;i++)
+      {
+         var param = values[i].split('=');
+         if (param[0] == 'q')
+         {
+            terms = unescape(param[1]);
+            break;
+         }
+      }
+      if (terms != '')
+      {
+         var element = document.getElementById('SiteSearch1');
+         element.value = terms;
+         searchPage('');
+      }
+   }
+}
+</script>
+<script>
+$(document).ready(function()
+{
+   searchParseURL();
+   var jQuerySpinner1Options =
+   {
+      min: 1,
+      max: 10,
+      step: 1
+   };
+   $("#jQuerySpinner1").spinner(jQuerySpinner1Options);
+});
+</script>
+</head>
+<body>
+<div id="wb_Shape1" style="position:absolute;left:821px;top:279px;width:319px;height:457px;z-index:0;">
+<img src="images/img0001.png" id="Shape1" alt="" style="width:319px;height:457px;"></div>
+<div id="wb_Image1" style="position:absolute;left:138px;top:4px;width:1017px;height:67px;z-index:1;">
+<img src="images/карандаши.jpg" id="Image1" alt=""></div>
+<div id="wb_Image2" style="position:absolute;left:163px;top:71px;width:140px;height:125px;z-index:2;">
+<img src="images/КарандашиЧ.jpg" id="Image2" alt=""></div>
+<form name="SiteSearch1_form" id="SiteSearch1_form" accept-charset="UTF-8" onsubmit="return searchPage(features)">
+<input type="text" id="SiteSearch1" style="position:absolute;left:322px;top:117px;width:661px;height:21px;line-height:21px;z-index:3;" name="SiteSearch1" value="" spellcheck="false" placeholder=" &#1042;&#1074;&#1077;&#1076;&#1080;&#1090;&#1077; &#1085;&#1072;&#1079;&#1074;&#1072;&#1085;&#1080;&#1077; &#1080;&#1083;&#1080; &#1072;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083; &#1090;&#1086;&#1074;&#1072;&#1088;&#1072;"></form>
+<input type="button" id="Button1" onclick="searchPage();return false;" name="Найти" value="Найти" style="position:absolute;left:1024px;top:117px;width:107px;height:39px;z-index:4;">
+<hr id="Line1" style="position:absolute;left:138px;top:207px;width:1002px;height:1px;z-index:5;">
+<div id="wb_Text7" style="position:absolute;left:163px;top:232px;width:1093px;height:24px;z-index:6;">
+<span style="color:#000000;font-family:Arial;font-size:21px;"><strong>Набор перманентных маркеров Schneider (толщина линии 1-3 мм, 4 штуки в упаковке)</strong></span></div>
+<div id="wb_Image3" style="position:absolute;left:194px;top:292px;width:308px;height:319px;z-index:7;">
+<img src="images/ручка1.jpg" id="Image3" alt=""></div>
+<div id="wb_Image4" style="position:absolute;left:179px;top:632px;width:108px;height:95px;z-index:8;">
+<img src="images/ручка2.jpg" id="Image4" alt=""></div>
+<div id="wb_Image5" style="position:absolute;left:287px;top:632px;width:95px;height:95px;z-index:9;">
+<img src="images/ручка3.jpg" id="Image5" alt=""></div>
+<div id="wb_Text8" style="position:absolute;left:838px;top:339px;width:247px;height:41px;z-index:10;">
+<span style="color:#DC143C;font-family:Arial;font-size:35px;"><strong>269,00р.</strong></span></div>
+<div id="wb_Line2" style="position:absolute;left:1151px;top:0px;width:2px;height:1171px;z-index:11;">
+<img src="images/img0002.png" id="Line2" alt=""></div>
+<div id="wb_Line3" style="position:absolute;left:113px;top:0px;width:2px;height:1171px;z-index:12;">
+<img src="images/img0003.png" id="Line3" alt=""></div>
+<div id="wb_Text10" style="position:absolute;left:565px;top:377px;width:248px;height:19px;z-index:13;">
+<span style="color:#000000;font-family:Arial;font-size:17px;"><strong>Характеристики:</strong></span></div>
+<div id="wb_Text9" style="position:absolute;left:565px;top:337px;width:250px;height:18px;z-index:14;">
+<span style="color:#000000;font-family:Arial;font-size:15px;">Арт. <strong>12345</strong></span></div>
+<div id="wb_Text11" style="position:absolute;left:838px;top:380px;width:250px;height:16px;z-index:15;">
+<span style="color:#000000;font-family:Arial;font-size:13px;"> 67,25 р./шт.</span></div>
+<div id="wb_Text12" style="position:absolute;left:564px;top:415px;width:253px;height:208px;z-index:16;">
+<span style="color:#000000;font-family:Arial;font-size:13px;">Торговая марка:&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Schneider<br><br>Производитель:&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Schneider<br><br>Цвет чернил:&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; набор<br><br>Толщина линии письма:&nbsp;&nbsp;&nbsp;&nbsp; 3мм<br><br>Форма наконечника:&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; круглая<br><br>Материал корпуса:&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; пластик<br><br>Страна происхождения:&nbsp;&nbsp;&nbsp; Германия</span></div>
+<input type="submit" id="Button2" name="" value="В корзину" style="position:absolute;left:907px;top:415px;width:178px;height:27px;z-index:17;">
+<div id="wb_jQuerySpinner1" style="position:absolute;left:836px;top:415px;width:60px;height:27px;z-index:18;">
+<input type="text" id="jQuerySpinner1" style="width:31px;height:19px;line-height:19px;" name="jQuerySpinner1" value="1"></div>
+<hr id="Line4" style="position:absolute;left:138px;top:279px;width:1002px;height:1px;z-index:19;">
+<hr id="Line5" style="position:absolute;left:820px;top:467px;width:320px;height:1px;z-index:20;">
+<div id="wb_Text13" style="position:absolute;left:892px;top:481px;width:251px;height:42px;z-index:21;">
+<span style="color:#0000FF;font-family:Arial;font-size:13px;">&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color:#808080;font-family:Arial;font-size:13px;">Доступен<br></span><span style="color:#0000FF;font-family:Arial;font-size:8px;"><br></span><span style="color:#808080;font-family:Arial;font-size:13px;">&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span></div>
+<input type="submit" id="Button6" name="" value="Обратная связь" style="position:absolute;left:322px;top:83px;width:136px;height:34px;z-index:22;">
+<input type="submit" id="Button7" name="" value="Контакты" style="position:absolute;left:889px;top:83px;width:144px;height:34px;z-index:23;">
+<input type="submit" id="Button8" name="" value="Адреса магазинов" style="position:absolute;left:483px;top:83px;width:185px;height:34px;z-index:24;">
+<input type="submit" id="Button9" name="" value="Оплата" style="position:absolute;left:677px;top:83px;width:82px;height:34px;z-index:25;">
+<input type="submit" id="Button10" name="" value="Доставка" style="position:absolute;left:798px;top:83px;width:82px;height:34px;z-index:26;">
+<input type="submit" id="Button12" name="" value="Самовывоз" style="position:absolute;left:836px;top:481px;width:96px;height:16px;z-index:27;">
+<div id="wb_Text1" style="position:absolute;left:892px;top:507px;width:251px;height:42px;z-index:28;">
+<span style="color:#0000FF;font-family:Arial;font-size:13px;">&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color:#808080;font-family:Arial;font-size:13px;">Доступна<br></span><span style="color:#0000FF;font-family:Arial;font-size:8px;"><br></span><span style="color:#808080;font-family:Arial;font-size:13px;">&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span></div>
+<input type="submit" id="Button13" name="" value="Онлайн оплата" style="position:absolute;left:843px;top:507px;width:104px;height:16px;z-index:29;">
+<div id="wb_Shape2" style="position:absolute;left:135px;top:815px;width:1006px;height:361px;z-index:30;">
+<img src="images/img0008.png" id="Shape2" alt="" style="width:1006px;height:361px;"></div>
+<div id="wb_Image6" style="position:absolute;left:172px;top:826px;width:92px;height:86px;z-index:31;">
+<img src="images/КарандашиЧ.jpg" id="Image6" alt=""></div>
+<div id="wb_Text2" style="position:absolute;left:172px;top:930px;width:249px;height:15px;z-index:32;">
+<span style="color:#000000;font-family:Arial;font-size:12px;">12534 Москва, Краснопресненская наб., 7</span></div>
+<div id="wb_Text3" style="position:absolute;left:172px;top:952px;width:249px;height:15px;z-index:33;">
+<span style="color:#000000;font-family:Arial;font-size:12px;"><strong>Телефон: </strong></span><span style="color:#0000FF;font-family:Arial;font-size:12px;"><strong>+7(495) 123-45-67</strong></span></div>
+<div id="wb_Text4" style="position:absolute;left:173px;top:978px;width:249px;height:15px;z-index:34;">
+<span style="color:#000000;font-family:Arial;font-size:12px;">Без выходных 10:00-21:00</span></div>
+<div id="wb_Text5" style="position:absolute;left:173px;top:1004px;width:249px;height:16px;z-index:35;">
+<span style="color:#0000FF;font-family:Arial;font-size:13px;">Контактная информация</span></div>
+<div id="wb_Text6" style="position:absolute;left:173px;top:1030px;width:249px;height:15px;z-index:36;">
+<span style="color:#0000FF;font-family:Arial;font-size:12px;">Политика конфиденциальности</span></div>
+<div id="wb_Image7" style="position:absolute;left:173px;top:1067px;width:68px;height:66px;z-index:37;">
+<img src="images/unnamed.jpg" id="Image7" alt=""></div>
+<div id="wb_Image8" style="position:absolute;left:263px;top:1068px;width:67px;height:66px;z-index:38;">
+<img src="images/vk_1_1550470664.jpg.600x450_q85.jpg" id="Image8" alt=""></div>
+<div id="wb_Image9" style="position:absolute;left:358px;top:1068px;width:66px;height:66px;z-index:39;">
+<img src="images/photo.png" id="Image9" alt=""></div>
+<input type="submit" id="Button3" name="" value="Описание" style="position:absolute;left:138px;top:736px;width:354px;height:79px;z-index:40;">
+<input type="submit" id="Button4" name="" value="Отзывы" style="position:absolute;left:492px;top:736px;width:323px;height:79px;z-index:41;">
+<input type="submit" id="Button5" name="" value="Оплата" style="position:absolute;left:813px;top:736px;width:327px;height:79px;z-index:42;">
+<hr id="Line8" style="position:absolute;left:138px;top:279px;width:1002px;height:1px;z-index:43;">
+<hr id="Line6" style="position:absolute;left:137px;top:736px;width:1002px;height:1px;z-index:44;">
+<hr id="Line9" style="position:absolute;left:137px;top:736px;width:1002px;height:1px;z-index:45;">
+</body>
+</html>
